@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FAZAIA Feedback - Administration</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='admin.css') }}"
+    >
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+
+<body>
+
+<div class="dashboard">
+
+
+    <!-- ==========================================
+         HEADER
+    =========================================== -->
+
+    <header>
+
+        <div>
+
+            <h1>
+                FAZAIA Feedback System
+            </h1>
+
+            <p>
+                Administration Dashboard
+            </p>
+
+        </div>
+
+        <div class="admin-badge">
+            ADMINISTRATION
+        </div>
+
+    </header>
+
+
+
+    <!-- ==========================================
+         STATISTICS
+    =========================================== -->
+
+    <section class="stats">
+
+        <div class="stat-card">
+
+            <span>
+                Total Feedback
+            </span>
+
+            <strong>
+                {{ total_feedback }}
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                New
+            </span>
+
+            <strong>
+                {{ new_feedback }}
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Under Review
+            </span>
+
+            <strong>
+                {{ under_review }}
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Reviewed
+            </span>
+
+            <strong>
+                {{ reviewed }}
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Resolved
+            </span>
+
+            <strong>
+                {{ resolved }}
+            </strong>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         ADMINISTRATION INSIGHTS
+    =========================================== -->
+
+    <section class="insights">
+
+        <div class="insight-card">
+
+            <div class="insight-icon">
+                📈
+            </div>
+
+            <div>
+
+                <span>
+                    Most Reported Concern
+                </span>
+
+                <strong>
+                    {{ most_reported_concern }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="insight-card">
+
+            <div class="insight-icon">
+                🏫
+            </div>
+
+            <div>
+
+                <span>
+                    Class With Most Feedback
+                </span>
+
+                <strong>
+                    {{ top_class }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="insight-card">
+
+            <div class="insight-icon">
+                💬
+            </div>
+
+            <div>
+
+                <span>
+                    Most Common Feedback
+                </span>
+
+                <strong>
+                    {{ top_feedback_type }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="insight-card">
+
+            <div class="insight-icon">
+                ⭐
+            </div>
+
+            <div>
+
+                <span>
+                    Average Rating
+                </span>
+
+                <strong>
+                    {{ average_rating }}/5
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         FILTERS
+    =========================================== -->
+
+    <section class="panel">
+
+        <div class="table-header">
+
+            <div>
+
+                <h2>
+                    Feedback Filters
+                </h2>
+
+                <p>
+                    Filter feedback for easier administration.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form
+            method="GET"
+            action="/admin"
+            class="filters"
+        >
+
+            <select name="class">
+
+                <option value="">
+                    All Classes
+                </option>
+
+                {% for item in classes %}
+
+                <option
+                    value="{{ item['class_name'] }}"
+                    {% if selected_class == item['class_name'] %}
+                    selected
+                    {% endif %}
+                >
+
+                    {{ item['class_name'] }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+
+
+            <select name="type">
+
+                <option value="">
+                    All Feedback Types
+                </option>
+
+                {% for item in feedback_types %}
+
+                <option
+                    value="{{ item['feedback_type'] }}"
+                    {% if selected_type == item['feedback_type'] %}
+                    selected
+                    {% endif %}
+                >
+
+                    {{ item['feedback_type'] }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+
+
+            <select name="subject">
+
+                <option value="">
+                    All Subjects
+                </option>
+
+                {% for item in subjects %}
+
+                <option
+                    value="{{ item['subject'] }}"
+                    {% if selected_subject == item['subject'] %}
+                    selected
+                    {% endif %}
+                >
+
+                    {{ item['subject'] }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+
+
+            <button
+                type="submit"
+                class="filter-button"
+            >
+                Apply Filters
+            </button>
+
+
+
+            <a
+                href="/admin"
+                class="clear-button"
+            >
+                Clear
+            </a>
+
+        </form>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         CHARTS
+    =========================================== -->
+
+    <section class="charts-grid">
+
+
+        <!-- CLASS CHART -->
+
+        <div class="chart-panel">
+
+            <div class="chart-heading">
+
+                <div>
+
+                    <h2>
+                        📊 Feedback by Class
+                    </h2>
+
+                    <p>
+                        Number of feedback submissions from each class.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="chart-container">
+
+                <canvas id="classChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TYPE CHART -->
+
+        <div class="chart-panel">
+
+            <div class="chart-heading">
+
+                <div>
+
+                    <h2>
+                        🥧 Feedback by Type
+                    </h2>
+
+                    <p>
+                        Distribution of different feedback categories.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="chart-container">
+
+                <canvas id="typeChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- RATING CHART -->
+
+        <div class="chart-panel">
+
+            <div class="chart-heading">
+
+                <div>
+
+                    <h2>
+                        ⭐ Student Rating Distribution
+                    </h2>
+
+                    <p>
+                        How students have rated their experience.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="chart-container">
+
+                <canvas id="ratingChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- CONCERN CHART -->
+
+        <div class="chart-panel">
+
+            <div class="chart-heading">
+
+                <div>
+
+                    <h2>
+                        📈 Most Reported Concerns
+                    </h2>
+
+                    <p>
+                        Areas most frequently mentioned by students.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="chart-container">
+
+                <canvas id="concernChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         STUDENT FEEDBACK TABLE
+    =========================================== -->
+
+    <section class="panel">
+
+        <div class="table-header">
+
+            <div>
+
+                <h2>
+                    Student Feedback
+                </h2>
+
+                <p>
+                    All submitted feedback
+                </p>
+
+            </div>
+
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search feedback..."
+            >
+
+        </div>
+
+
+
+        <div class="table-wrapper">
+
+            <table id="feedbackTable">
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Student</th>
+
+                        <th>School ID</th>
+
+                        <th>Class</th>
+
+                        <th>Type</th>
+
+                        <th>Subject</th>
+
+                        <th>Rating</th>
+
+                        <th>Status</th>
+
+                        <th>Date</th>
+
+                        <th>View</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for item in feedback %}
+
+                    <tr>
+
+                        <td>
+                            #{{ item["id"] }}
+                        </td>
+
+
+                        <td>
+                            {{ item["student_name"] }}
+                        </td>
+
+
+                        <td>
+                            {{ item["school_id"] }}
+                        </td>
+
+
+                        <td>
+                            {{ item["class_name"] }}
+                        </td>
+
+
+                        <td>
+                            {{ item["feedback_type"] }}
+                        </td>
+
+
+                        <td>
+                            {{ item["subject"] or "—" }}
+                        </td>
+
+
+                        <td>
+
+                            {% if item["rating"] %}
+
+                                ⭐ {{ item["rating"] }}
+
+                            {% else %}
+
+                                —
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="status">
+
+                                {{ item["status"] }}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+                            {{ item["created_at"] }}
+                        </td>
+
+
+                        <td>
+
+                            <button
+                                type="button"
+                                class="view-button"
+                                onclick='viewFeedback(
+                                    {{ item["id"]|tojson }},
+                                    {{ item["student_name"]|tojson }},
+                                    {{ item["school_id"]|tojson }},
+                                    {{ item["class_name"]|tojson }},
+                                    {{ item["section"]|tojson }},
+                                    {{ item["feedback_type"]|tojson }},
+                                    {{ item["subject"]|tojson }},
+                                    {{ item["problems"]|tojson }},
+                                    {{ item["rating"]|tojson }},
+                                    {{ item["additional_feedback"]|tojson }},
+                                    {{ item["status"]|tojson }},
+                                    {{ item["created_at"]|tojson }}
+                                )'
+                            >
+
+                                View
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         FOOTER
+    =========================================== -->
+
+    <footer>
+
+        <p>
+            FAZAIA Feedback System
+        </p>
+
+        <span>
+            Powered by M. Sufyan Mazhar
+        </span>
+
+    </footer>
+
+</div>
+
+
+
+<!-- ==========================================
+     FEEDBACK MODAL
+=========================================== -->
+
+<div
+    id="feedbackModal"
+    class="modal"
+>
+
+    <div class="modal-content">
+
+        <button
+            class="modal-close"
+            onclick="closeFeedback()"
+        >
+            ×
+        </button>
+
+
+        <h2>
+            Feedback Details
+        </h2>
+
+
+        <div class="detail-grid">
+
+            <div>
+
+                <span>
+                    Student
+                </span>
+
+                <strong id="detailStudent"></strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    School ID
+                </span>
+
+                <strong id="detailSchoolId"></strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Class
+                </span>
+
+                <strong id="detailClass"></strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Section
+                </span>
+
+                <strong id="detailSection"></strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Feedback Type
+                </span>
+
+                <strong id="detailType"></strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Subject
+                </span>
+
+                <strong id="detailSubject"></strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Rating
+                </span>
+
+                <strong id="detailRating"></strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Status
+                </span>
+
+                <strong id="detailStatus"></strong>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="detail-box">
+
+            <h3>
+                Student's Problem / Concern
+            </h3>
+
+            <p id="detailProblems"></p>
+
+        </div>
+
+
+
+        <div class="detail-box">
+
+            <h3>
+                Additional Feedback
+            </h3>
+
+            <p id="detailAdditional"></p>
+
+        </div>
+
+
+
+        <div class="detail-box">
+
+            <h3>
+                Submitted
+            </h3>
+
+            <p id="detailDate"></p>
+
+        </div>
+
+
+
+        <div class="modal-actions">
+
+            <button
+                onclick="changeStatus('Under Review')"
+            >
+                Under Review
+            </button>
+
+            <button
+                onclick="changeStatus('Reviewed')"
+            >
+                Reviewed
+            </button>
+
+            <button
+                onclick="changeStatus('Resolved')"
+            >
+                Resolved
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+     JAVASCRIPT
+=========================================== -->
+
+<script>
+
+
+// ==========================================
+// SEARCH
+// ==========================================
+
+const searchInput =
+    document.getElementById("searchInput");
+
+const table =
+    document.getElementById("feedbackTable");
+
+
+searchInput.addEventListener(
+    "input",
+    function () {
+
+        const search =
+            this.value.toLowerCase();
+
+        const rows =
+            table
+                .getElementsByTagName("tbody")[0]
+                .getElementsByTagName("tr");
+
+
+        for (let row of rows) {
+
+            const text =
+                row.textContent.toLowerCase();
+
+            row.style.display =
+                text.includes(search)
+                    ? ""
+                    : "none";
+
+        }
+
+    }
+);
+
+
+
+// ==========================================
+// CURRENT FEEDBACK
+// ==========================================
+
+let currentFeedbackId = null;
+
+
+
+// ==========================================
+// VIEW FEEDBACK
+// ==========================================
+
+function viewFeedback(
+    id,
+    student,
+    schoolId,
+    className,
+    section,
+    type,
+    subject,
+    problems,
+    rating,
+    additional,
+    status,
+    date
+) {
+
+    currentFeedbackId = id;
+
+
+    document.getElementById(
+        "detailStudent"
+    ).textContent =
+        student || "—";
+
+
+    document.getElementById(
+        "detailSchoolId"
+    ).textContent =
+        schoolId || "—";
+
+
+    document.getElementById(
+        "detailClass"
+    ).textContent =
+        className || "—";
+
+
+    document.getElementById(
+        "detailSection"
+    ).textContent =
+        section || "—";
+
+
+    document.getElementById(
+        "detailType"
+    ).textContent =
+        type || "—";
+
+
+    document.getElementById(
+        "detailSubject"
+    ).textContent =
+        subject || "—";
+
+
+    document.getElementById(
+        "detailRating"
+    ).textContent =
+        rating
+            ? "⭐ " + rating
+            : "—";
+
+
+    document.getElementById(
+        "detailStatus"
+    ).textContent =
+        status || "New";
+
+
+    document.getElementById(
+        "detailProblems"
+    ).textContent =
+        problems ||
+        "No specific problem provided.";
+
+
+    document.getElementById(
+        "detailAdditional"
+    ).textContent =
+        additional ||
+        "No additional feedback.";
+
+
+    document.getElementById(
+        "detailDate"
+    ).textContent =
+        date || "—";
+
+
+    document.getElementById(
+        "feedbackModal"
+    ).classList.add("active");
+
+}
+
+
+
+// ==========================================
+// CLOSE MODAL
+// ==========================================
+
+function closeFeedback() {
+
+    document.getElementById(
+        "feedbackModal"
+    ).classList.remove("active");
+
+}
+
+
+
+// ==========================================
+// CHANGE STATUS
+// ==========================================
+
+function changeStatus(newStatus) {
+
+    if (!currentFeedbackId) {
+        return;
+    }
+
+
+    fetch(
+        "/update-status",
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type":
+                    "application/json"
+            },
+
+            body: JSON.stringify({
+
+                id: currentFeedbackId,
+
+                status: newStatus
+
+            })
+        }
+    )
+
+    .then(response =>
+        response.json()
+    )
+
+    .then(data => {
+
+        if (data.success) {
+
+            alert(
+                "Status updated successfully."
+            );
+
+            location.reload();
+
+        } else {
+
+            alert(
+                data.message ||
+                "Unable to update status."
+            );
+
+        }
+
+    })
+
+    .catch(() => {
+
+        alert(
+            "Could not connect to the server."
+        );
+
+    });
+
+}
+
+
+
+// ==========================================
+// CLOSE MODAL OUTSIDE CLICK
+// ==========================================
+
+document
+    .getElementById("feedbackModal")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (event.target === this) {
+
+                closeFeedback();
+
+            }
+
+        }
+    );
+
+
+
+// ==========================================
+// CHART DATA
+// ==========================================
+
+const classLabels = [
+    {% for item in class_data %}
+        {{ item["class_name"]|tojson }},
+    {% endfor %}
+];
+
+
+const classValues = [
+    {% for item in class_data %}
+        {{ item["count"] }},
+    {% endfor %}
+];
+
+
+const typeLabels = [
+    {% for item in type_data %}
+        {{ item["feedback_type"]|tojson }},
+    {% endfor %}
+];
+
+
+const typeValues = [
+    {% for item in type_data %}
+        {{ item["count"] }},
+    {% endfor %}
+];
+
+
+const ratingLabels = [
+    {% for item in rating_data %}
+        {{ item["rating"]|tojson }},
+    {% endfor %}
+];
+
+
+const ratingValues = [
+    {% for item in rating_data %}
+        {{ item["count"] }},
+    {% endfor %}
+];
+
+
+const concernLabels = [
+    {% for item in concern_data %}
+        {{ item["name"]|tojson }},
+    {% endfor %}
+];
+
+
+const concernValues = [
+    {% for item in concern_data %}
+        {{ item["count"] }},
+    {% endfor %}
+];
+
+
+
+// ==========================================
+// CLASS CHART
+// ==========================================
+
+new Chart(
+    document.getElementById("classChart"),
+    {
+
+        type: "bar",
+
+        data: {
+
+            labels: classLabels,
+
+            datasets: [{
+
+                label:
+                    "Feedback submissions",
+
+                data:
+                    classValues,
+
+                borderWidth: 1
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+                    display: false
+                }
+
+            },
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    ticks: {
+                        precision: 0
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+);
+
+
+
+// ==========================================
+// TYPE CHART
+// ==========================================
+
+new Chart(
+    document.getElementById("typeChart"),
+    {
+
+        type: "doughnut",
+
+        data: {
+
+            labels: typeLabels,
+
+            datasets: [{
+
+                data:
+                    typeValues,
+
+                borderWidth: 1
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+
+                    position: "bottom"
+
+                }
+
+            }
+
+        }
+
+    }
+);
+
+
+
+// ==========================================
+// RATING CHART
+// ==========================================
+
+new Chart(
+    document.getElementById("ratingChart"),
+    {
+
+        type: "bar",
+
+        data: {
+
+            labels: ratingLabels.map(
+                rating => "⭐ " + rating
+            ),
+
+            datasets: [{
+
+                label:
+                    "Number of responses",
+
+                data:
+                    ratingValues,
+
+                borderWidth: 1
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    ticks: {
+                        precision: 0
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+);
+
+
+
+// ==========================================
+// CONCERN CHART
+// ==========================================
+
+new Chart(
+    document.getElementById("concernChart"),
+    {
+
+        type: "bar",
+
+        data: {
+
+            labels: concernLabels,
+
+            datasets: [{
+
+                label:
+                    "Reports",
+
+                data:
+                    concernValues,
+
+                borderWidth: 1
+
+            }]
+
+        },
+
+        options: {
+
+            indexAxis: "y",
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+                    display: false
+                }
+
+            },
+
+            scales: {
+
+                x: {
+
+                    beginAtZero: true,
+
+                    ticks: {
+                        precision: 0
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

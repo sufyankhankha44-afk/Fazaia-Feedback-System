@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FAZAIA Administration Login</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eaf2fb 0%,
+                    #f7faff 50%,
+                    #eef5ff 100%
+                );
+
+            color: #17365d;
+        }
+
+
+        /* ============================= */
+        /* LOGIN CARD */
+        /* ============================= */
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+
+            background: rgba(255, 255, 255, 0.97);
+
+            padding: 42px 38px 32px;
+
+            border-radius: 22px;
+
+            box-shadow:
+                0 20px 55px rgba(23, 54, 93, 0.14);
+
+            text-align: center;
+
+            border: 1px solid rgba(23, 54, 93, 0.06);
+        }
+
+
+        /* ============================= */
+        /* LOGO */
+        /* ============================= */
+
+        .logo-box {
+            width: 78px;
+            height: 78px;
+
+            margin: 0 auto 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #17365d,
+                    #3978c8
+                );
+
+            box-shadow:
+                0 10px 25px
+                rgba(23, 54, 93, 0.22);
+        }
+
+        .logo {
+            font-size: 38px;
+        }
+
+
+        /* ============================= */
+        /* TITLE */
+        /* ============================= */
+
+        h1 {
+            margin: 0;
+
+            color: #17365d;
+
+            font-size: 27px;
+
+            font-weight: 700;
+        }
+
+        .subtitle {
+            margin: 8px 0 30px;
+
+            color: #718096;
+
+            font-size: 14px;
+        }
+
+
+        /* ============================= */
+        /* FORM */
+        /* ============================= */
+
+        .form-group {
+            text-align: left;
+
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #34495e;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+
+            padding: 14px 15px;
+
+            border:
+                1px solid #d8e0ea;
+
+            border-radius: 11px;
+
+            background: #fbfdff;
+
+            color: #17365d;
+
+            font-size: 15px;
+
+            transition:
+                border-color 0.2s,
+                box-shadow 0.2s,
+                background 0.2s;
+        }
+
+        input::placeholder {
+            color: #a1acb8;
+        }
+
+        input:focus {
+            outline: none;
+
+            background: white;
+
+            border-color: #3978c8;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(57, 120, 200, 0.12);
+        }
+
+
+        /* ============================= */
+        /* LOGIN BUTTON */
+        /* ============================= */
+
+        button {
+            width: 100%;
+
+            margin-top: 5px;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #17365d,
+                    #245b96
+                );
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 8px 18px
+                rgba(23, 54, 93, 0.18);
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s,
+                opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.95;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 11px 22px
+                rgba(23, 54, 93, 0.22);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+
+        /* ============================= */
+        /* ERROR MESSAGE */
+        /* ============================= */
+
+        .error {
+            background: #fff0f0;
+
+            color: #b00020;
+
+            padding: 11px 12px;
+
+            border-radius: 9px;
+
+            margin-bottom: 18px;
+
+            border:
+                1px solid #ffd2d2;
+
+            font-size: 14px;
+        }
+
+
+        /* ============================= */
+        /* SECURITY NOTE */
+        /* ============================= */
+
+        .security-note {
+            margin-top: 22px;
+
+            padding: 10px;
+
+            border-radius: 9px;
+
+            background: #f4f8fc;
+
+            color: #718096;
+
+            font-size: 12px;
+        }
+
+
+        /* ============================= */
+        /* FOOTER */
+        /* ============================= */
+
+        .footer {
+            margin-top: 24px;
+
+            padding-top: 18px;
+
+            border-top:
+                1px solid #edf0f4;
+
+            color: #8a96a3;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+        .footer strong {
+            color: #17365d;
+        }
+
+
+        /* ============================= */
+        /* MOBILE */
+        /* ============================= */
+
+        @media (max-width: 480px) {
+
+            .login-card {
+                padding:
+                    34px 24px 27px;
+
+                border-radius: 18px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .logo-box {
+                width: 70px;
+                height: 70px;
+            }
+
+            .logo {
+                font-size: 33px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="login-card">
+
+
+        <!-- ============================= -->
+        <!-- LOGO -->
+        <!-- ============================= -->
+
+        <div class="logo-box">
+
+            <div class="logo">
+                🏫
+            </div>
+
+        </div>
+
+
+        <!-- ============================= -->
+        <!-- TITLE -->
+        <!-- ============================= -->
+
+        <h1>
+            FAZAIA Feedback
+        </h1>
+
+        <p class="subtitle">
+            Administration Dashboard
+        </p>
+
+
+        <!-- ============================= -->
+        <!-- ERROR -->
+        <!-- ============================= -->
+
+        {% if error %}
+
+        <div class="error">
+            {{ error }}
+        </div>
+
+        {% endif %}
+
+
+        <!-- ============================= -->
+        <!-- LOGIN FORM -->
+        <!-- ============================= -->
+
+        <form
+            method="POST"
+            action="/admin-login"
+        >
+
+            <div class="form-group">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    id="username"
+                    type="text"
+                    name="username"
+                    placeholder="Enter administration username"
+                    autocomplete="username"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    placeholder="Enter password"
+                    autocomplete="current-password"
+                    required
+                >
+
+            </div>
+
+
+            <button type="submit">
+                Login to Dashboard
+            </button>
+
+        </form>
+
+
+        <!-- ============================= -->
+        <!-- SECURITY MESSAGE -->
+        <!-- ============================= -->
+
+        <div class="security-note">
+            🔒 Administration access only
+        </div>
+
+
+        <!-- ============================= -->
+        <!-- FOOTER -->
+        <!-- ============================= -->
+
+        <div class="footer">
+
+            FAZAIA Feedback System
+            <br>
+
+            Powered by
+            <strong>
+                M. Sufyan Mazhar
+            </strong>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

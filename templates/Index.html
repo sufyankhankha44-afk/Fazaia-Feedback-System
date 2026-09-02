@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fazaia Feedback System</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+
+    <div class="page">
+
+        <!-- HEADER -->
+
+        <header class="hero">
+
+            <div class="logo-circle">
+                F
+            </div>
+
+            <div>
+
+                <h1>Fazaia Feedback System</h1>
+
+                <p>
+                    Your voice matters. Help us make your
+                    college experience better.
+                </p>
+
+            </div>
+
+        </header>
+
+
+        <!-- INTRODUCTION -->
+
+        <section class="welcome-card">
+
+            <div class="welcome-icon">
+                💬
+            </div>
+
+            <div>
+
+                <h2>Share Your Feedback</h2>
+
+                <p>
+                    Tell the administration about your
+                    experiences, concerns, suggestions or
+                    problems. Your feedback will help the
+                    college understand students better.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- FORM -->
+
+        <form id="feedbackForm">
+
+
+            <!-- STUDENT INFORMATION -->
+
+            <section class="form-card">
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+                        👤
+                    </div>
+
+                    <div>
+
+                        <h2>Student Information</h2>
+
+                        <p>
+                            Tell us a little about yourself.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="field">
+
+                        <label for="student_name">
+                            Student Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="student_name"
+                            placeholder="Enter your name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="school_id">
+                            School ID
+                        </label>
+
+                        <input
+                            type="text"
+                            id="school_id"
+                            placeholder="Enter your School ID"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="class_name">
+                            Class
+                        </label>
+
+                        <select
+                            id="class_name"
+                            required
+                        >
+
+                            <option value="">
+                                Select class
+                            </option>
+
+                            <option>Prep</option>
+
+                            <option>I</option>
+                            <option>II</option>
+                            <option>III</option>
+                            <option>IV</option>
+                            <option>V</option>
+
+                            <option>VI</option>
+                            <option>VII</option>
+                            <option>VIII</option>
+
+                            <option>IX</option>
+                            <option>X</option>
+
+                            <option>XI</option>
+                            <option>XII</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="section">
+                            Section
+                        </label>
+
+                        <input
+                            type="text"
+                            id="section"
+                            placeholder="e.g. A"
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- FEEDBACK TYPE -->
+
+            <section class="form-card">
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+                        💡
+                    </div>
+
+                    <div>
+
+                        <h2>What would you like to tell us?</h2>
+
+                        <p>
+                            Select the area related to your feedback.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="feedback_type">
+                        Feedback Type
+                    </label>
+
+                    <select
+                        id="feedback_type"
+                        required
+                    >
+
+                        <option value="">
+                            Select feedback type
+                        </option>
+
+                        <option>
+                            Academic / Subject Concern
+                        </option>
+
+                        <option>
+                            Teacher & Teaching
+                        </option>
+
+                        <option>
+                            School Activity
+                        </option>
+
+                        <option>
+                            Student Environment
+                        </option>
+
+                        <option>
+                            Discipline / Strictness
+                        </option>
+
+                        <option>
+                            Facilities
+                        </option>
+
+                        <option>
+                            Suggestion
+                        </option>
+
+                        <option>
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="subject">
+                        Subject
+                    </label>
+
+                    <input
+                        type="text"
+                        id="subject"
+                        placeholder="Enter the subject if applicable"
+                    >
+
+                    <small>
+                        You can leave this blank if your feedback
+                        is not related to a subject.
+                    </small>
+
+                </div>
+
+            </section>
+
+
+            <!-- PROBLEM -->
+
+            <section class="form-card">
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+                        ⚠️
+                    </div>
+
+                    <section class="form-card">
+
+    <div class="section-heading">
+
+        <div class="section-icon">
+            ⚠️
+        </div>
+
+        <div>
+            <h2>What is the concern?</h2>
+
+            <p>
+                You can select more than one concern.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="concerns">
+
+        <label class="concern-option">
+            <input
+                type="checkbox"
+                name="problem"
+                value="Subject Difficulty"
+            >
+            <span>📚 Subject difficulty</span>
+        </label>
+
+
+        <label class="concern-option">
+            <input
+                type="checkbox"
+                name="problem"
+                value="Teaching Method"
+            >
+            <span>👨‍🏫 Teaching method</span>
+        </label>
+
+
+        <label class="concern-option">
+            <input
+                type="checkbox"
+                name="problem"
+                value="Teacher Behaviour"
+            >
+            <span>🗣️ Teacher behaviour</span>
+        </label>
+
+
+        <label class="concern-option">
+            <input
+                type="checkbox"
+                name="problem"
+                value="Strictness / Discipline"
+            >
+            <span>⚖️ Strictness / discipline</span>
+        </label>
+
+
+        <label class="concern-option">
+            <input
+                type="checkbox"
+                name="problem"
+                value="Student Environment"
+            >
+            <span>👥 Student environment</span>
+        </label>
+
+
+        <label class="concern-option">
+            <input
+                type="checkbox"
+                name="problem"
+                value="Facilities"
+            >
+            <span>🏫 Facilities</span>
+        </label>
+
+
+        <label class="concern-option">
+            <input
+                type="checkbox"
+                name="problem"
+                value="School Activity"
+            >
+            <span>🎯 School activity</span>
+        </label>
+
+
+        <label class="concern-option">
+            <input
+                type="checkbox"
+                name="problem"
+                value="Workload"
+            >
+            <span>📖 Workload</span>
+        </label>
+
+
+        <label class="concern-option">
+            <input
+                type="checkbox"
+                name="problem"
+                value="Other"
+            >
+            <span>✏️ Other</span>
+        </label>
+
+    </div>
+
+
+    <div class="field problem-description">
+
+        <label for="problem_description">
+            Describe your problem
+        </label>
+
+        <textarea
+            id="problem_description"
+            placeholder="Tell the administration what happened or what you think could be improved..."
+        ></textarea>
+
+    </div>
+
+</section>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="problems">
+                        Main Problem
+                    </label>
+
+                    <textarea
+                        id="problems"
+                        placeholder="Explain the problem in your own words..."
+                    ></textarea>
+
+                </div>
+
+            </section>
+
+
+            <!-- RATING -->
+
+            <section class="form-card">
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+                        ⭐
+                    </div>
+
+                    <div>
+
+                        <h2>How would you rate your experience?</h2>
+
+                        <p>
+                            Choose a rating from 1 to 5.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="rating-box">
+
+                    <label class="rating-option">
+
+                        <input
+                            type="radio"
+                            name="rating"
+                            value="1"
+                        >
+
+                        <span>1</span>
+
+                    </label>
+
+
+                    <label class="rating-option">
+
+                        <input
+                            type="radio"
+                            name="rating"
+                            value="2"
+                        >
+
+                        <span>2</span>
+
+                    </label>
+
+
+                    <label class="rating-option">
+
+                        <input
+                            type="radio"
+                            name="rating"
+                            value="3"
+                        >
+
+                        <span>3</span>
+
+                    </label>
+
+
+                    <label class="rating-option">
+
+                        <input
+                            type="radio"
+                            name="rating"
+                            value="4"
+                        >
+
+                        <span>4</span>
+
+                    </label>
+
+
+                    <label class="rating-option">
+
+                        <input
+                            type="radio"
+                            name="rating"
+                            value="5"
+                        >
+
+                        <span>5</span>
+
+                    </label>
+
+                </div>
+
+                <div class="rating-labels">
+
+                    <span>Needs Improvement</span>
+
+                    <span>Excellent</span>
+
+                </div>
+
+            </section>
+
+
+            <!-- ADDITIONAL -->
+
+            <section class="form-card">
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+                        ✍️
+                    </div>
+
+                    <div>
+
+                        <h2>Anything else?</h2>
+
+                        <p>
+                            Share anything you think the administration
+                            should know.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <textarea
+                        id="additional_feedback"
+                        placeholder="Write any additional comments, suggestions or details..."
+                    ></textarea>
+
+                </div>
+
+            </section>
+
+
+            <!-- SUBMIT -->
+
+            <button
+                type="submit"
+                class="submit-button"
+            >
+
+                <span>Submit Feedback</span>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </button>
+
+
+            <div
+                id="message"
+                class="message"
+            ></div>
+
+
+        </form>
+
+
+        <footer>
+
+    <p>
+        Fazaia Feedback System
+    </p>
+
+    <span>
+        Designed to help students communicate with
+        the administration.
+    </span>
+
+    <div class="developer-credit">
+        Powered by <strong>M. Sufyan Mazhar</strong>
+    </div>
+
+</footer>
+
+    </div>
+
+
+    <script
+        src="{{ url_for('static', filename='script.js') }}"
+    ></script>
+
+</body>
+
+</html>
