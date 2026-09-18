@@ -324,12 +324,33 @@ def submit_feedback():
             )
         ).strip()
 
-        feedback_type = str(
-            data.get(
-                "feedback_type",
-                ""
-            )
-        ).strip()
+        # ==================================
+        # GET MULTIPLE FEEDBACK TYPES
+        # ==================================
+
+        feedback_types = data.get(
+            "feedback_type",
+            []
+        )
+
+        if isinstance(
+            feedback_types,
+            str
+        ):
+
+            feedback_types = [
+                feedback_types
+            ]
+
+        feedback_types = [
+
+            str(item).strip()
+
+            for item in feedback_types
+
+            if str(item).strip()
+
+        ]
 
         subject = str(
             data.get(
@@ -400,12 +421,12 @@ def submit_feedback():
             }), 400
 
 
-        if not feedback_type:
+        if not feedback_types:
 
             return jsonify({
                 "success": False,
                 "message":
-                    "Please select the feedback type."
+                    "Please select at least one feedback type."
             }), 400
 
 
@@ -456,9 +477,9 @@ def submit_feedback():
         # ==================================
         # MAIN FEEDBACK RECORD
         #
-        # IMPORTANT:
-        # We are NOT requiring a matching
-        # classes table row anymore.
+        # This is the common information.
+        # A separate copy will be created
+        # for every selected feedback type.
         # ==================================
 
         feedback_record = {
@@ -482,7 +503,15 @@ def submit_feedback():
                 rating,
 
             "description":
-                problem_description,
+                (
+                    problem_description
+                    + (
+                        " | Additional: "
+                        + additional_feedback
+                        if additional_feedback
+                        else ""
+                    )
+                ),
 
             "status":
                 "New",
@@ -493,24 +522,14 @@ def submit_feedback():
             "updated_at":
                 current_time,
 
-            "description":
-    (
-        problem_description
-        + (
-            " | Additional: "
-            + additional_feedback
-            if additional_feedback
-            else ""
-        )
-    ),
             "class_name":
                 class_name,
 
             "feedback_type":
-                feedback_type,
+                "",
 
             "problems":
-    problem_text
+                problem_text
         }
 
 
@@ -537,47 +556,65 @@ def submit_feedback():
 
 
         # ==================================
-        # OPTIONAL CATEGORY ID
+        # INSERT ONE RECORD FOR EACH
+        # SELECTED FEEDBACK TYPE
         # ==================================
 
-        category_id = find_related_id(
-            "feedback_categories",
-            feedback_type
-        )
+        for feedback_type in feedback_types:
 
-        if category_id is not None:
+            record = feedback_record.copy()
 
-            feedback_record[
-                "category_id"
-            ] = category_id
+            record[
+                "feedback_type"
+            ] = feedback_type
+
+
+            # ==================================
+            # OPTIONAL CATEGORY ID
+            # ==================================
+
+            category_id = find_related_id(
+                "feedback_categories",
+                feedback_type
+            )
+
+            if category_id is not None:
+
+                record[
+                    "category_id"
+                ] = category_id
+
+
+            # ==================================
+            # INSERT INTO SUPABASE
+            # ==================================
+
+            print(
+                "SUBMITTING FEEDBACK:"
+            )
+
+            print(
+                record
+            )
+
+
+            response = (
+                supabase
+                .table("feedback")
+                .insert(record)
+                .execute()
+            )
+
+
+            print(
+                "FEEDBACK INSERTED:",
+                response.data
+            )
 
 
         # ==================================
-        # INSERT INTO SUPABASE
+        # SUCCESS RESPONSE
         # ==================================
-
-        print(
-            "SUBMITTING FEEDBACK:"
-        )
-
-        print(
-            feedback_record
-        )
-
-
-        response = (
-            supabase
-            .table("feedback")
-            .insert(feedback_record)
-            .execute()
-        )
-
-
-        print(
-            "FEEDBACK INSERTED:",
-            response.data
-        )
-
 
         return jsonify({
 

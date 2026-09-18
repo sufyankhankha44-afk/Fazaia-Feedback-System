@@ -5,10 +5,34 @@ form.addEventListener("submit", async function (event) {
 
     event.preventDefault();
 
+
     // Get selected rating
     const selectedRating = document.querySelector(
         'input[name="rating"]:checked'
     );
+
+
+    // Get selected feedback types
+    const selectedFeedbackTypes = Array.from(
+        document.querySelectorAll(
+            'input[name="feedback_type"]:checked'
+        )
+    ).map(function (checkbox) {
+        return checkbox.value;
+    });
+
+
+    // Require at least one feedback type
+    if (selectedFeedbackTypes.length === 0) {
+
+        message.textContent =
+            "Please select at least one feedback type.";
+
+        message.style.color = "#c0392b";
+
+        return;
+    }
+
 
     // Get selected concerns
     const selectedProblems = Array.from(
@@ -18,11 +42,6 @@ form.addEventListener("submit", async function (event) {
     ).map(function (checkbox) {
         return checkbox.value;
     });
-
-    // Get written problem description
-    const problemDescription = document.getElementById(
-        "problem_description"
-    ).value.trim();
 
 
     // Require at least one concern
@@ -35,6 +54,12 @@ form.addEventListener("submit", async function (event) {
 
         return;
     }
+
+
+    // Get written problem description
+    const problemDescription = document.getElementById(
+        "problem_description"
+    ).value.trim();
 
 
     // Prepare feedback data
@@ -56,9 +81,7 @@ form.addEventListener("submit", async function (event) {
             "section"
         ).value.trim(),
 
-        feedback_type: document.getElementById(
-            "feedback_type"
-        ).value,
+        feedback_type: selectedFeedbackTypes,
 
         subject: document.getElementById(
             "subject"
@@ -114,8 +137,10 @@ form.addEventListener("submit", async function (event) {
             message.style.color =
                 "#16803c";
 
+
             // Clear the form
             form.reset();
+
 
             // Return to top
             window.scrollTo({
@@ -128,8 +153,10 @@ form.addEventListener("submit", async function (event) {
 
             message.textContent =
                 "⚠ " +
-                (result.message ||
-                "Something went wrong.");
+                (
+                    result.message ||
+                    "Something went wrong."
+                );
 
             message.style.color =
                 "#c0392b";

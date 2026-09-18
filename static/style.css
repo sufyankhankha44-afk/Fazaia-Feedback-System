@@ -971,3 +971,32 @@ footer span {
     }
 
 }
+/* ============================= */
+/* FEEDBACK TYPE CHECKBOXES */
+/* ============================= */
+
+.feedback-type-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.feedback-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    width: 100%;
+    cursor: pointer;
+}
+
+.feedback-option input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.feedback-option span {
+    margin: 0;
+    line-height: 1.4;
+}
